@@ -1,8 +1,8 @@
-import Habit from "../components/Habit";
+import Habit from "./components/Habit";
 function App() {
   return (
     <div className="App">
-      <Habit />
+      <Habit completed={3} />
     </div>
   );
 }
