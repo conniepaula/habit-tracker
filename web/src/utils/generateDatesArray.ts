@@ -8,7 +8,6 @@ export function generateDatesArray() {
 
   while (compareDates.isBefore(today)) {
     datesArray.push(compareDates.toDate());
-    console.log(datesArray);
     compareDates = compareDates.add(1, "day");
   }
   return datesArray;
