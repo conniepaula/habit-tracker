@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body{
-    @apply bg-[#282A36] text-[#E1E1E6]
+    @apply bg-background text-stone-700
 }

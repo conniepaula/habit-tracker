@@ -1,11 +1,16 @@
-import Habit from "./components/Habit";
+import FrequencyTable from "./components/FrequencyTable";
+import Header from "./components/Header";
+import "./styles/global.css";
+
+// import Habit from "./components/Habit";
 function App() {
   return (
-    <div className="App">
-      <Habit completed={3} />
-      <Habit completed={20} />
-      <Habit completed={5} />
-    </div>
+    <main className="w-screen h-screen flex justify-center items-center">
+      <section className="w-full max-w-5xl px-6 flex flex-col gap-16">
+        <Header />
+        <FrequencyTable />
+      </section>
+    </main>
   );
 }
 
