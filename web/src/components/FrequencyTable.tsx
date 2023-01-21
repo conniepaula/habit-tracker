@@ -1,12 +1,31 @@
 import DailyHabit from "./DailyHabit";
 import { generateDatesArray } from "../utils/generateDatesArray";
+import { useEffect, useState } from "react";
+import { api } from "../lib/axios";
+import dayjs from "dayjs";
+
+type Summary = Array<{
+  id: string;
+  date: string;
+  total: number;
+  completed: number;
+}>;
 
 function FrequencyTable() {
+  const [summary, setSumamary] = useState<Summary>([]);
+  useEffect(() => {
+    api.get("summary").then((response) => {
+      setSumamary(response.data);
+    }),
+      [];
+  });
+
   const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
   const datesInTable = generateDatesArray();
   const minimumWeeks = 18;
   const minimumTableSize = minimumWeeks * weekdays.length;
   const fillerDates = minimumTableSize - datesInTable.length;
+
   return (
     <section className="w-fill flex">
       <div className="grid grid-rows-7 grid-flow-row gap-3">
@@ -23,7 +42,17 @@ function FrequencyTable() {
       </div>
       <div className="grid grid-rows-7 grid-flow-col gap-3">
         {datesInTable.map((date) => {
-          return <DailyHabit key={date.toString()} />;
+          const dayInSummary = summary.find((day) => {
+            return dayjs(date).isSame(day.date, "day");
+          });
+          return (
+            <DailyHabit
+              key={date.toString()}
+              date={date}
+              total={dayInSummary?.total}
+              completed={dayInSummary?.completed}
+            />
+          );
         })}
 
         {fillerDates > 0 &&
