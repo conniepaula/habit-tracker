@@ -11,7 +11,7 @@ function Header() {
       <Dialog.Root>
         <Dialog.Trigger
           type="button"
-          className="border border-brand-400 font-semibold rounded-lg px-5 py-4 flex gap-3 items-center hover:border-brand-200 "
+          className="border-2 border-brand-400 font-semibold rounded-lg px-5 py-4 flex gap-3 items-center hover:border-brand-200 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1"
         >
           <Plus />
           New habit
@@ -19,7 +19,7 @@ function Header() {
         <Dialog.Portal>
           <Dialog.Overlay className="w-screen h-screen bg-background/80 fixed inset-0" />
           <Dialog.Content className="absolute p-10 bg-white rounded-2xl w-full max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Dialog.Close className="absolute right-6 top-6 text-stone-400 hover:text-stone-200">
+            <Dialog.Close className="absolute right-6 top-6 rounded-lg text-stone-400 hover:text-stone-200 focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1 ">
               <X size={24} aria-label="Close" />
             </Dialog.Close>
             <Dialog.Title className="text-3xl leading-tight text-stone-500 font-extrabold">

@@ -12,13 +12,12 @@ type Summary = Array<{
 }>;
 
 function FrequencyTable() {
-  const [summary, setSumamary] = useState<Summary>([]);
+  const [summary, setSummary] = useState<Summary>([]);
   useEffect(() => {
     api.get("summary").then((response) => {
-      setSumamary(response.data);
-    }),
-      [];
-  });
+      setSummary(response.data);
+    });
+  }, []);
 
   const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
   const datesInTable = generateDatesArray();
@@ -41,19 +40,20 @@ function FrequencyTable() {
         })}
       </div>
       <div className="grid grid-rows-7 grid-flow-col gap-3">
-        {datesInTable.map((date) => {
-          const dayInSummary = summary.find((day) => {
-            return dayjs(date).isSame(day.date, "day");
-          });
-          return (
-            <DailyHabit
-              key={date.toString()}
-              date={date}
-              total={dayInSummary?.total}
-              completed={dayInSummary?.completed}
-            />
-          );
-        })}
+        {summary.length > 0 &&
+          datesInTable.map((date) => {
+            const dayInSummary = summary.find((day) => {
+              return dayjs(date).isSame(day.date, "day");
+            });
+            return (
+              <DailyHabit
+                key={date.toString()}
+                date={date}
+                total={dayInSummary?.total}
+                completed={dayInSummary?.completed}
+              />
+            );
+          })}
 
         {fillerDates > 0 &&
           Array.from({ length: fillerDates }).map((_, index) => {

@@ -1,8 +1,9 @@
 import * as Popover from "@radix-ui/react-popover";
 import clsx from "clsx";
 import ProgressBar from "./ProgressBar";
-import CheckboxText from "./CheckboxText";
 import dayjs from "dayjs";
+import DailyHabitList from "./DailyHabitList";
+import { useState } from "react";
 
 interface HabitProps {
   date: Date;
@@ -11,13 +12,17 @@ interface HabitProps {
 }
 
 function DailyHabit({ date, completed = 0, total = 0 }: HabitProps) {
-  const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const [alteredCompleted, setAlteredCompleted] = useState(completed);
+  function handleInfoChange(completed: number) {
+    setAlteredCompleted(completed);
+  }
+  const progress = total > 0 ? Math.round((alteredCompleted / total) * 100) : 0;
   const displayedDate = dayjs(date).format("DD/MM");
   const weekday = dayjs(date).format("dddd");
   return (
     <Popover.Root>
       <Popover.Trigger
-        className={clsx("w-10 h-10 border-2 rounded-lg", {
+        className={clsx("w-10 h-10 border-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1", {
           "bg-stone-100 border-stone-200": progress === 0,
           "bg-brand-200 border-brand-100": progress > 0 && progress < 20,
           "bg-brand-300 border-brand-200": progress >= 20 && progress < 40,
@@ -28,7 +33,7 @@ function DailyHabit({ date, completed = 0, total = 0 }: HabitProps) {
         })}
       />
       <Popover.Portal>
-        <Popover.Content className="min-w-[320px] p-6 rounded-2xl bg-white flex flex-col shadow-lg">
+        <Popover.Content className="min-w-[320px] p-6 rounded-2xl bg-white flex flex-col shadow-lg focus:outline-none">
           <p className="font-semibold text-stone-500">
             {weekday.toLowerCase()}
           </p>
@@ -36,11 +41,7 @@ function DailyHabit({ date, completed = 0, total = 0 }: HabitProps) {
             {displayedDate}
           </p>
           <ProgressBar progress={progress} />
-          <div className="mt-8 flex flex-col gap-3">
-            <CheckboxText text="Drink a gallon of water" tracker={true} />
-            <CheckboxText text="Drink 1 cup of tea" tracker={true} />
-            <CheckboxText text="Exercise for 30 minutes" tracker={true} />
-          </div>
+          <DailyHabitList onInfoChange={handleInfoChange} date={date} />
           <Popover.Arrow height={8} width={16} className="fill-white" />
         </Popover.Content>
       </Popover.Portal>

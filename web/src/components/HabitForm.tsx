@@ -3,10 +3,11 @@ import { Check } from "phosphor-react";
 import React, { FormEvent, useState } from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import CheckboxText from "./CheckboxText";
+import { api } from "../lib/axios";
 
 function HabitForm() {
-  const [habit, setHabit] = useState("");
-  const [frequency, setFrequency] = useState<number[]>([]);
+  const [title, setTitle] = useState("");
+  const [habitFrequency, setHabitFrequency] = useState<number[]>([]);
 
   const weekdays = [
     "Sunday",
@@ -18,19 +19,27 @@ function HabitForm() {
     "Saturday",
   ];
 
-  function handleHabitCreation(event: FormEvent) {
+  async function handleHabitCreation(event: FormEvent) {
     event.preventDefault();
-    console.log(frequency, habit);
+    if (!title || habitFrequency.length === 0) {
+      return;
+    }
+    await api.post("habits", {
+      title,
+      habitFrequency,
+    });
+    setTitle("");
+    setHabitFrequency([]);
   }
 
   function handleWeekdaySelection(day: number) {
-    const alreadySelected = frequency.findIndex((item) => item === day);
+    const alreadySelected = habitFrequency.findIndex((item) => item === day);
 
     if (alreadySelected >= 0) {
-      const filteredFrequency = frequency.filter((item) => item !== day);
-      setFrequency(filteredFrequency);
+      const filteredFrequency = habitFrequency.filter((item) => item !== day);
+      setHabitFrequency(filteredFrequency);
     } else {
-      setFrequency([...frequency, day]);
+      setHabitFrequency([...habitFrequency, day]);
     }
   }
   return (
@@ -42,9 +51,10 @@ function HabitForm() {
         type="text"
         id="title"
         placeholder="Exercise, sleep well, drink water..."
-        className="p-4 rounded-lg mt-3 bg-stone-100 placeholder:text-stone-400"
+        className="p-4 rounded-lg mt-3 bg-stone-100 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1"
         autoFocus
-        onChange={(event) => setHabit(event.target.value)}
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
       />
       <label htmlFor="" className="font-semibold leading-tight mt-4">
         Tracking frequency
@@ -55,21 +65,21 @@ function HabitForm() {
           return (
             <CheckboxText
               key={day}
+              checked={habitFrequency.includes(index)}
               onChange={() => handleWeekdaySelection(index)}
               text={day}
             />
           );
         })}
       </div>
-      {habit == "" ? (
+      {title == "" || habitFrequency.length === 0 ? (
         <Tooltip.Provider>
           <Tooltip.Root delayDuration={0}>
             <Tooltip.Trigger asChild>
               <button
                 type="submit"
-                tooltip-enable={habit == "" ? true : false}
-                disabled={habit == "" ? true : false}
-                className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-stone-400 hover:bg-stone-400 text-stone-100"
+                disabled={title == "" ? true : false}
+                className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-stone-400 text-stone-100 focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1"
               >
                 <Check size={20} weight="bold" />
                 Confirm
@@ -80,7 +90,14 @@ function HabitForm() {
                 className="p-2 bg-stone-200 rounded-lg"
                 sideOffset={5}
               >
-                It's mandatory to fill the habit field.
+                {title === ""
+                  ? "It's mandatory to fill the habit field."
+                  : "You must choose at least one day of the week."}
+                <Tooltip.Arrow
+                  height={8}
+                  width={16}
+                  className="fill-stone-200"
+                />
               </Tooltip.Content>
             </Tooltip.Portal>
           </Tooltip.Root>
@@ -88,9 +105,8 @@ function HabitForm() {
       ) : (
         <button
           type="submit"
-          tooltip-enable={habit == "" ? true : false}
-          disabled={habit == "" ? true : false}
-          className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-brand-800 text-stone-100"
+          disabled={title == "" ? true : false}
+          className="mt-6 rounded-lg p-4 flex items-center justify-center gap-3 font-semibold bg-brand-800 hover:bg-brand-600 text-stone-100 focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1 transition-colors"
         >
           <Check size={20} weight="bold" />
           Confirm
