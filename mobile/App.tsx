@@ -8,7 +8,7 @@ import {
   Inter_800ExtraBold,
 } from "@expo-google-fonts/inter";
 import Loading from "./src/components/Loading";
-import Home from "./src/screens/Home";
+import { Home } from "./src/screens/Home";
 
 export default function App() {
   const [fontsLoaded] = useFonts({

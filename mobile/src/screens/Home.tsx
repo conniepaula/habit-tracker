@@ -1,11 +1,11 @@
 import { View, Text, ScrollView } from "react-native";
 import React from "react";
-import Header from "./Header";
-import { DailyHabit, DAY_SIZE } from "./DailyHabit";
+import Header from "../components/Header";
+import { DailyHabit, DAY_SIZE } from "../components/DailyHabit";
 
 import { generateDatesArray } from "../utils/generateDatesArray";
 
-export default function Home() {
+export function Home() {
   const weekdays = ["S", "M", "T", "W", "T", "F", "S"];
   const datesInTable = generateDatesArray();
   const minimumWeeks = 13;
