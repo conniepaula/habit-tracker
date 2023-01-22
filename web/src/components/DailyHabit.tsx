@@ -22,18 +22,21 @@ function DailyHabit({ date, completed = 0, total = 0 }: HabitProps) {
   return (
     <Popover.Root>
       <Popover.Trigger
-        className={clsx("w-10 h-10 border-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1", {
-          "bg-stone-100 border-stone-200": progress === 0,
-          "bg-brand-200 border-brand-100": progress > 0 && progress < 20,
-          "bg-brand-300 border-brand-200": progress >= 20 && progress < 40,
-          "bg-brand-400 border-brand-300": progress >= 40 && progress < 60,
-          "bg-brand-600 border-brand-400": progress >= 60 && progress < 80,
-          "bg-brand-700 border-brand-500": progress >= 80 && progress < 100,
-          "bg-brand-900 border-brand-700": progress == 100,
-        })}
+        className={clsx(
+          "w-10 h-10 border-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-200 focus:ring-offset-1",
+          {
+            "bg-stone-100 border-stone-200": progress === 0,
+            "bg-brand-200 border-brand-100": progress > 0 && progress < 20,
+            "bg-brand-300 border-brand-200": progress >= 20 && progress < 40,
+            "bg-brand-400 border-brand-300": progress >= 40 && progress < 60,
+            "bg-brand-600 border-brand-400": progress >= 60 && progress < 80,
+            "bg-brand-700 border-brand-500": progress >= 80 && progress < 100,
+            "bg-brand-900 border-brand-700": progress == 100,
+          }
+        )}
       />
       <Popover.Portal>
-        <Popover.Content className="min-w-[320px] p-6 rounded-2xl bg-white flex flex-col shadow-lg focus:outline-none">
+        <Popover.Content className="min-w-[320px] p-6 rounded-2xl bg-white flex flex-col shadow-lg shadow-stone-300 focus:outline-none">
           <p className="font-semibold text-stone-500">
             {weekday.toLowerCase()}
           </p>
